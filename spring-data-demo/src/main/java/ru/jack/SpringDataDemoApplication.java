@@ -3,14 +3,22 @@ package ru.jack;
 import lombok.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.web.*;
 import org.springframework.context.*;
 import org.springframework.dao.*;
-import org.springframework.data.relational.core.sql.*;
+//import org.springframework.data.relational.core.sql.*;
+import org.springframework.data.domain.*;
 import org.springframework.jdbc.core.*;
+import ru.jack.model.*;
+import ru.jack.repository.*;
+import org.springframework.boot.autoconfigure.data.web.*;
 
 import javax.sql.*;
 import java.sql.*;
 import java.util.*;
+
+import static org.springframework.data.domain.Pageable.*;
+
 
 @SpringBootApplication
 /**
@@ -18,11 +26,47 @@ import java.util.*;
  * По сути, оборачивает стандартный JDBC и предоставляет удобные интерфейсы для настройки и
  * взаимодействия с БД.
  */
+
+/**
+*JDBC JPA
+ *
+ * JDBC - библиотека внутри Java для работы с базами данных
+ *Driver, Connection, Statement - основные интерфейсы JDBC
+ *
+ * JPA (Jakarta Persistence API)- набор соглашений по работе с реляционными моделями.
+ * Основнаяя идея - "замапить" DB-модель и работать со строками таблиц как с объектами.
+ *JPA - это не реализация, а протокол (api, спецификация).
+ * Hibernate - одна из реализаций JPA.
+ *
+ * spring-data-jdbc - набор готовых инструментов для взаимодействия с базой данных.
+ * По сути, оборачивает стандартный JDBC и представляет удобные интерфейсы для настройки и взаимодействия с БД.
+ *
+ * spring-data-jpa - набор готовых инструментов для работы с JPA.
+ *
+**/
 public class SpringDataDemoApplication {
 
 	@SneakyThrows
 	public static void main(String[] args) {
-		SpringApplication.run(SpringDataDemoApplication.class, args);
+		ConfigurableApplicationContext context = SpringApplication.run(SpringDataDemoApplication.class, args);
+		UserRepository userRepository = context.getBean(UserRepository.class);
+
+		for (int i = 15; i<=25; i++) {
+			User user = new User();
+			user.setId((long) i);
+			user.setName("User #" + i);
+			user.setAge(i);
+			userRepository.save(user);
+			System.out.println(user);
+		}
+		System.out.println("result: -----");
+		System.out.println(userRepository.findByAgeGreaterThen(Pageable.ofSize(3), 20));
+
+//		Optional<User> foundUser = userRepository.findById(1L);
+//		foundUser.ifPresent(it -> System.out.println(it));
+//
+//		userRepository.findById(2L)
+//				.ifPresentOrElse(it -> System.out.println(it), () -> System.out.println("Не найден пользователь с идентификатором 2"));
 //		JdbcTemplate jdbcTemplate = context.getBean(JdbcTemplate.class);
 //
 //		//JdbcTemplate
@@ -57,10 +101,10 @@ public class SpringDataDemoApplication {
 //			}
 //		}
     }
-	@Data
-	@AllArgsConstructor
-	static class User {
-		long id;
-		String name;
-	}
+//	@Data
+//	@AllArgsConstructor
+//	static class User {
+//		long id;
+//		String name;
+// 	}
 }
