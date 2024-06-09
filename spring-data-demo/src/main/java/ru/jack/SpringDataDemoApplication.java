@@ -21,12 +21,13 @@ public class SpringDataDemoApplication {
 
 		//JdbcTemplate
 		
-		jdbcTemplate.execute(new StatementCallback<Integer>() {
+		jdbcTemplate.execute("create table users(id bigint, name varchar(512))");
+		jdbcTemplate.execute("insert into users(id, name) values(1, 'Igor')");
+		jdbcTemplate.query("select id, name from users", new RowMapper<User>() {
 			@Override
-			public Integer doInStatement(Statement stmt) throws SQLException, DataAccessException {
+			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 				return null;
 			}
-
 		});
 
 		DataSource dataSource = context.getBean(DataSource.class);
@@ -49,5 +50,9 @@ public class SpringDataDemoApplication {
 			}
 		}
     }
-
+	@Data
+	static class User {
+		long id;
+		String name;
+	}
 }
