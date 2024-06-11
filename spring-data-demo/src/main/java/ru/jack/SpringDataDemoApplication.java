@@ -1,6 +1,7 @@
 package ru.jack;
 
 import lombok.*;
+import org.hibernate.query.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.web.*;
@@ -8,6 +9,7 @@ import org.springframework.context.*;
 import org.springframework.dao.*;
 //import org.springframework.data.relational.core.sql.*;
 import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
 import org.springframework.jdbc.core.*;
 import ru.jack.model.*;
 import ru.jack.repository.*;
@@ -60,9 +62,17 @@ public class SpringDataDemoApplication {
 			System.out.println(user);
 		}
 		System.out.println("result: -----");
-		System.out.println(userRepository.findByAgeGreaterThen(Pageable.ofSize(3), 20));
+//		System.out.println(userRepository.findByAgeGreaterThen(Pageable.ofSize(3), 20)); // ====!!! у меня не пошло
 
-//		Optional<User> foundUser = userRepository.findById(1L);
+
+		PageRequest request = PageRequest.of(2,2, Sort.Direction.DESC, "id");
+		Page<User> page = userRepository.findByAgeGreaterThen(request, 20); // ====!!! у меня не пошло
+//		System.out.println(page.getContent()); // ====!!! у меня не пошло
+//		System.out.println(page.getTotalPages()); // ====!!! у меня не пошло
+//		System.out.println(page.getTotalElements()); // ====!!! у меня не пошло
+//		System.out.println(page.getNumber());
+
+//		Optional<User> foundUser = userRepository.findById(1L); // ====!!! у меня не пошло
 //		foundUser.ifPresent(it -> System.out.println(it));
 //
 //		userRepository.findById(2L)
