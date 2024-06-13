@@ -3,7 +3,8 @@ package ru.jack;
 import lombok.*;
 import org.hibernate.query.*;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.*;
 import org.springframework.boot.autoconfigure.data.web.*;
 import org.springframework.context.*;
 import org.springframework.dao.*;
@@ -61,16 +62,31 @@ public class SpringDataDemoApplication {
 			userRepository.save(user);
 			System.out.println(user);
 		}
+
+		System.out.println(userRepository.myquery("User #18"));
 		System.out.println("result: -----");
+		List<Object> objects = userRepository.myquery2();
+		System.out.println(objects);
+
+		// Подключение функций из БД:
+//		JdbcTemplate jdbcTemplate = context.getBean(JdbcTemplate.class);
+//		jdbcTemplate.execute(statement -> {
+
+//		});
+
 //		System.out.println(userRepository.findByAgeGreaterThen(Pageable.ofSize(3), 20)); // ====!!! у меня не пошло
 
 
 		PageRequest request = PageRequest.of(2,2, Sort.Direction.DESC, "id");
-		Page<User> page = userRepository.findByAgeGreaterThen(request, 20); // ====!!! у меня не пошло
+		System.out.println("after request: =======================" + request);
+//		Page<User> findAll(Pageable pageable);
+		System.out.println(userRepository.findAllByName("User #22"));
+//		Page<User> page = userRepository.findByAgeGreaterThen(request, 20); // ====!!! у меня не пошло
 //		System.out.println(page.getContent()); // ====!!! у меня не пошло
 //		System.out.println(page.getTotalPages()); // ====!!! у меня не пошло
 //		System.out.println(page.getTotalElements()); // ====!!! у меня не пошло
 //		System.out.println(page.getNumber());
+//		System.out.println(userRepository.findTop3ByAgeGreaterThan(20)); // ====!!! у меня не пошло
 
 //		Optional<User> foundUser = userRepository.findById(1L); // ====!!! у меня не пошло
 //		foundUser.ifPresent(it -> System.out.println(it));
