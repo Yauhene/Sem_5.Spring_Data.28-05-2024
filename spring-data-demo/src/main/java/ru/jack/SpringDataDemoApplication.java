@@ -44,6 +44,7 @@ import static org.springframework.data.domain.Pageable.*;
  * spring-data-jdbc - набор готовых инструментов для взаимодействия с базой данных.
  * По сути, оборачивает стандартный JDBC и представляет удобные интерфейсы для настройки и взаимодействия с БД.
  *
+ * spring-data-commons
  * spring-data-jpa - набор готовых инструментов для работы с JPA.
  *
 **/
